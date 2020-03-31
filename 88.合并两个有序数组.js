@@ -44,8 +44,41 @@
  * @param {number} n
  * @return {void} Do not return anything, modify nums1 in-place instead.
  */
-var merge = function(nums1, m, nums2, n) {
+// 方法一：从nums2里取出数字，在nums1中从后往前比较
+var merge = function (nums1, m, nums2, n) {
+    if(m == 0){
+        for(var i = 0; i < n; i++){
+            nums1.unshift(nums2[i]);
+        }
+    }
+    var endOfNums1 = m-1;
+    for (var i = 0; i < n; i++) {
+        for (var j = endOfNums1; j >= -1; j--) {
+            if (nums2[i] < nums1[j]) {
+                nums1[j + 1] = nums1[j];
+            } else {
+                nums1[j + 1] = nums2[i];
+                break;
+            }
+        }
+        endOfNums1++;
+    }
+    nums1.length = m + n;
+};
 
+// 方法二：从nums2中取出元素，在nums1中从前往后比较
+var merge = function (nums1, m, nums2, n) {
+    var endOfNums1 = m-1;
+    for (var i = 0; i < n; i++) {
+        for (var j = 0; j < nums1.length; j++) { //这里从前往后遍历
+            if (nums2[i] < nums1[j] || j > endOfNums1) {
+                nums1.splice(j, 0, nums2[i])
+                break;
+            }
+        }
+        endOfNums1++;
+    }
+    nums1.length = m + n;
 };
 // @lc code=end
 
